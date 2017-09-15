@@ -1,0 +1,11 @@
+
+
+{% block body %}
+    <h1>Création d'article</h1>
+    {{ form_start(form) }}
+        {{form_row(form.Title)}}
+        {{form_row(form.Content)}}
+       
+        {{form_rest(form)}}
+
+{% endblock %}
