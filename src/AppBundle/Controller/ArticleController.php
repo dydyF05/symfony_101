@@ -30,9 +30,9 @@ class ArticleController extends Controller
         $form = $this->createForm(ArticleType:class, $article);
 
         $form->handleRequest($request);
-        if ($form->isValid) {
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->perist($article);
+            $em->persist($article);
             $em->flush();
 
             $this->addFlash(`success`, `L'article {$article->getTitle()} a été créé!`);
