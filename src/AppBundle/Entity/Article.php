@@ -8,6 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity
 */
 class Article {
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new \DateTime());
+    }
+
     /**
     * @var integer
     * 
