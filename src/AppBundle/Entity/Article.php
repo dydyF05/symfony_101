@@ -2,7 +2,7 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mappin as ORM;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
 * @ORM\Entity
