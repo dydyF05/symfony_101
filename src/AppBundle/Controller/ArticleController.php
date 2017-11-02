@@ -9,10 +9,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Route("article")
+ */
 class ArticleController extends Controller
 {
     /**
-     * @Route("/article/", name="article_index")
+     * @Route("/", name="article_index")
      * @Method({"GET"})
      */
     public function indexAction()
@@ -26,15 +29,15 @@ class ArticleController extends Controller
         // Il y a aussi find($id), findAll, findById, findBySlug($slug || $id), findOneBy (retourne un seul élément)
         // les finds retournent un objet/collection ou false 
         $articles = $em->getRepository('AppBundle:Article')->findAll();
-        // return $this->render('article/index.html.twig');
         return $this->render('article/index.html.twig', [
             'articles' => $articles
         ]);
     }
 
     /**
-    * @Route("article/create", name="front_article_create") 
-    * @Method({"GET", "POST"}) 
+    * @Route("/create", name="front_article_create") 
+    * @Method({"GET", "POST"})
+    * @param Request $request
     */
     public function createAction(Request $request)
     {
@@ -59,8 +62,10 @@ class ArticleController extends Controller
     }
 
     /**
-    * @Route("article/update", name="front_article_update") 
-    * @Method({"GET", "PUT"}) 
+    * @Route("/update", name="front_article_update") 
+    * @Method({"GET", "PUT"})
+    * @param Request $request
+    * @param Article $article
     */
     public function updateAction(Request $request, Article $article)
     {
@@ -83,6 +88,13 @@ class ArticleController extends Controller
         ]);
     }
 
+    /**
+    * @Route("/delete", name="front_article_delete") 
+    * @Method({"DELETE"})
+    * @param Request $request
+    * @param Article $article
+    * @return \Symfony\Component\HttpFoundation\RedirectResponse
+    */
     public function deleteAction(Request $request, Article $article)
     {
         $token = $request->attributes->get('token');
@@ -98,5 +110,25 @@ class ArticleController extends Controller
         $em->flush();
 
         return $this->redirectToRoute('article_index');
+    }
+
+    /**
+    * @Route("/detail", name="front_article_detail") 
+    * @Method({"GET"})
+    * @param Request $request
+    * @return \Symfony\Component\HttpFoundation\RedirectResponse
+    */
+    public function findAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $id = $request->query->get('id');
+
+        var_dump($id);
+
+        $article = $em->getRepository('AppBundle:Article')->find($id);
+        return $this->render('article/detail.html.twig', [
+            'article' => $article
+        ]);
     }
 }

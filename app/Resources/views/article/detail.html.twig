@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1>
+        Detail page
+    </h1>
+    {% if article is defined %}
+        {{ dump(article) }}
+    {% endif %}
+    </table>
+{% endblock %}
