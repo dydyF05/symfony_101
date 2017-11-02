@@ -63,7 +63,7 @@ class ArticleController extends Controller
 
     /**
     * @Route("/update", name="front_article_update") 
-    * @Method({"GET", "PUT"})
+    * @Method({"GET", "POST", "PUT"})
     * @param Request $request
     * @param Article $article
     */
@@ -118,14 +118,10 @@ class ArticleController extends Controller
     * @param Request $request
     * @return \Symfony\Component\HttpFoundation\RedirectResponse
     */
-    public function findAction(Request $request)
+    public function showAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
         $id = $request->query->get('id');
-
-        var_dump($id);
-
         $article = $em->getRepository('AppBundle:Article')->find($id);
         return $this->render('article/detail.html.twig', [
             'article' => $article

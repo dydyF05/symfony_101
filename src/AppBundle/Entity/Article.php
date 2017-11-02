@@ -3,43 +3,107 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\ArrayCollections;
 
 /**
 * @ORM\Entity
 */
-class Article {
-
-    public function __construct()
-    {
-        $this->setCreatedAt(new \DateTime());
+class Article
+{
+    /**
+     * Constructor
+     */
+    public function __construct() {
+        $this->tags = new ArrayCollection();
+        $this->updatedAt = new \DateTime();
+        $this->createdAt = new \DateTime();
+        $this->removed = false;
     }
-
+    
     /**
     * @var integer
-    * 
+    *
     * @ORM\Column(name="id", type="integer")
     * @ORM\Id
     * @ORM\GeneratedValue(strategy="AUTO")
     */
     private $id;
+    
     /**
     * @var string
-    * 
-    * @ORM\Column(type="string")
+    *
+    * @Gedmo\Slug(fields={"title"})
+    * @ORM\Column(type="string", unique=true)
+    */
+    private $slug;
+    
+    /**
+    * Get the value of slug
+    * @return string slug
+    */
+    public function getSlug() {
+        return $this->slug;
+    }
+    
+    /**
+    * @var string
+    *
+    * @ORM\Column(name="title", type="string")
     */
     private $title;
+    
+    /**
+    * @var DateTime
+    * 
+    * @ORM\Column(name="createdAt", type="datetime")
+    */
+    private $createdAt;
+    
     /**
     * @var DateTime
     * 
     * @ORM\Column(type="datetime")
+    * @Gedmo\Timestampable(on="update")
     */
-    private $createdAt;
+    private $updatedAt;
+    
     /**
     * @var string
-    * 
-    * @ORM\Column(type="text")
+    *
+    * @ORM\Column(name="content", type="text")
     */
     private $content;
+    
+    /**
+    * @var boolean
+    * @ORM\Column(name="removed", type="boolean")
+    */
+    private $removed;
+    
+    /**
+    * @var \AppBundle\Entity\Tag
+    * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag", cascade="persist")
+    */
+    private $tags;
+    
+    /**
+    * Get the value of removed
+    * @return boolean
+    */
+    public function getRemoved() {
+        return $this->removed;
+    }
+    
+    /**
+    * Set the value of removed
+    * @param boolean removed
+    * @return self
+    */
+    public function setRemoved($removed) {
+        $this->removed = $removed;        
+        return $this;
+    }
     
     
     /**
@@ -71,8 +135,7 @@ class Article {
     */
     public function setTitle($title)
     {
-        $this->title = $title;
-        
+        $this->title = $title;        
         return $this;
     }
     
@@ -95,8 +158,7 @@ class Article {
     */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
-        
+        $this->createdAt = $createdAt;        
         return $this;
     }
     
@@ -120,8 +182,32 @@ class Article {
     public function setContent($content)
     {
         $this->content = $content;
-        
         return $this;
+    }
+
+    /**
+     * @param Tag $tag
+     */
+    public function addTag(Tag $tag)
+    {
+        $this->tags[] = $tag;
+        return $this;
+    }
+
+    /**
+     * @param Tag $tag
+     */
+    public function removeTag(Tag $tag)
+    {
+        $this->tags->removeElement($tag);
+    }
+    
+    /**
+     * @param ArrayCollection|Tag
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
     
 }

@@ -13,7 +13,7 @@
                 <td>{{ article.createdAt.date }}</td>
                 <td>
                     <a href="{{ path('front_article_detail', {id: article.id}) }}"><button>Show</button></a>
-                    <a href="{{ path('front_article_update', {id: article.id}) }}"><button>Update</button></a>
+                    <a href="{{ path('front_article_update', {article: article}) }}"><button>Update</button></a>
                     <a href="{{ path('front_article_delete', {id: article.id}) }}"><button>Delete</button></a>
                 </td>
             </tr>
