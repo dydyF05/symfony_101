@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ArticleController extends Controller
 {
     /**
-     * @Route("/article/", name="admin_article_index")
+     * @Route("/article/", name="article_index")
      * @Method({"GET"})
      */
     public function indexAction()
@@ -49,12 +49,54 @@ class ArticleController extends Controller
 
             $this->addFlash(`success`, `L'article {$article->getTitle()} a été créé!`);
 
-            return $this->redirectToRoute('admin_article_index');
+            return $this->redirectToRoute('article_index');
         }
 
         return $this->render('article/create.html.twig', [
             'article' => $article,
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+    * @Route("article/update", name="front_article_update") 
+    * @Method({"GET", "PUT"}) 
+    */
+    public function updateAction(Request $request, Article $article)
+    {
+        $form = $this->createForm(ArticleType::class, $article);
+
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($article);
+            $em->flush();
+
+            $this->addFlash(`success`, `L'article {$article->getTitle()} a été modifié!`);
+
+            return $this->redirectToRoute('article_index');
+        }
+
+        return $this->render('article/create.html.twig', [
+            'article' => $article,
+            'form' => $form->createView()
+        ]);
+    }
+
+    public function deleteAction(Request $request, Article $article)
+    {
+        $token = $request->attributes->get('token');
+
+        if (!$this->isCsrfTokenValid('delete_article', $token)) {
+            throw new AccessDeniedException('Erreur CSRF');
+        }
+
+        $article->setRemoved(true);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($article);
+        $em->flush();
+
+        return $this->redirectToRoute('article_index');
     }
 }

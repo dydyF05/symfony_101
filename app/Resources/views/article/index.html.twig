@@ -3,4 +3,16 @@
     <h1>
         You are seeing index article page
     </h1>
+    {% if articles is defined %}
+    <table class="table table-condensed table-stripped table-responsive">
+        {% for article in articles %}
+            {{ dump(article) }}
+            <tr>
+                <td>{{ article.title }}</td>
+                <td>{{ article.content }}</td>
+                <td>{{ article.createdAt.date }}</td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+    </table>
 {% endblock %}
