@@ -90,7 +90,7 @@ class ArticleController extends Controller
 
     /**
     * @Route("/delete", name="front_article_delete") 
-    * @Method({"DELETE"})
+    * @Method({"GET"})
     * @param Request $request
     * @param Article $article
     * @return \Symfony\Component\HttpFoundation\RedirectResponse
