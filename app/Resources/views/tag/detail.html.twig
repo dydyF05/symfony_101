@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1>
+        Tag detailed page
+    </h1>
+    {% if tag is defined %}
+        {{ dump(tag) }}
+    {% endif %}
+    </table>
+{% endblock %}

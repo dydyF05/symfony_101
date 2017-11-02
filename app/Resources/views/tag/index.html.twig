@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1>
+        Tags page
+    </h1>
+    {% if tags is defined %}
+    <table class="table table-condensed table-stripped table-responsive">
+        {% for tag in tags %}
+            {{ dump(tag) }}
+            <tr>
+                <td>{{ tag.name }}</td>
+                <td>
+                    <a href="{{ path('front_tag_detail', {id: tag.id}) }}"><button>Show</button></a>
+                    <a href="{{ path('front_tag_update', {tag: tag}) }}"><button>Update</button></a>
+                    <a href="{{ path('front_tag_delete', {id: tag.id}) }}"><button>Delete</button></a>
+                </td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+    </table>
+{% endblock %}

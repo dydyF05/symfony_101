@@ -7,6 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use AppBundle\Form\TagType;
 
 class ArticleType extends AbstractType
 {
@@ -18,6 +20,10 @@ class ArticleType extends AbstractType
             ])
             ->add('Content', TextareaType::class, [
                 'label' => 'Contenu'
+            ])
+            ->add('Tags', CollectionType::class, [
+                'entry_type' => TagType::class,
+                'entry_options' => array('label' => false),
             ])
         ;
     }
